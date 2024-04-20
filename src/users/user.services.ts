@@ -1,4 +1,4 @@
-import { createUser, getUserByEmail, getUserByUsername } from './user.repo';
+import { createUser, getTrainsBetweenStations, getUserByEmail, getUserByUsername } from './user.repo';
 import jwt from 'jsonwebtoken';
 
 export const signupService = async (username: string, email: string, password: string) => {
@@ -33,4 +33,8 @@ export const loginService = async (email: string, password: string) => {
     );
 
     return token;
+};
+
+export const seatAvailabilityService = async (source: string, destination: string) => {
+    return await getTrainsBetweenStations(source, destination);
 };

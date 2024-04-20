@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { Route } from "../routes/routes.type";
-import { loginService, signupService } from "./user.services";
-import { ResponseHandler } from "../utilities/response.handler";
+import { seatAvailabilityService, loginService, signupService } from "./user.services";
+import { ResponseHandler } from "../middlewares/response.handler";
 
 const router = Router();
 
@@ -36,11 +36,12 @@ router.post('/book-ticket', (req, res, next) => {
     }
 });
 
-router.get('/seat-availability', (req, res, next) => {
-    try{
-
-    }
-    catch(e){
+router.get('/seat-availability', async(req, res, next) => {
+    const { source, destination } = req.query;
+    try {
+        const trains = await seatAvailabilityService(String(source), String(destination));
+        res.send(new ResponseHandler({trains}));
+    } catch (e) {
         next(e);
     }
 });

@@ -1,6 +1,6 @@
 import { Application, NextFunction, json, Request, Response } from "express";
 import { Routes } from "./routes.data";
-import { ResponseHandler } from "../utilities/response.handler";
+import { ResponseHandler } from "../middlewares/response.handler";
 
 export const registerMiddlewares = (app: Application) => {
     app.use(json());

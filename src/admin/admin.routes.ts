@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { Route } from "../routes/routes.type";
-import { adminAuthMiddleware } from "../utilities/admin.auth";
+import { adminAuthMiddleware } from "../middlewares/admin.auth";
 import { addTrainService } from "./admin.services";
-import { ResponseHandler } from "../utilities/response.handler";
+import { ResponseHandler } from "../middlewares/response.handler";
 
 const router = Router();
 router.post('/add-train', adminAuthMiddleware, async (req, res, next) => {
