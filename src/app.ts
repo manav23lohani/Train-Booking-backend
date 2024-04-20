@@ -1,9 +1,9 @@
 import Express from "express";
 import {registerMiddlewares} from "./routes/routes";
 
-const startApp = () => {
+export const startApp = () => {
     const app = Express();
-    const {PORT} = process.env;
+    const PORT = process.env.PORT || 5001;
 
     registerMiddlewares(app);
 
@@ -11,4 +11,3 @@ const startApp = () => {
         console.log(`Server started on port ${PORT}`);       
     })
 }
-export default startApp;

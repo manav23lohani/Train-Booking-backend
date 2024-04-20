@@ -1,20 +1,26 @@
 import { Router } from "express";
 import { Route } from "../routes/routes.type";
+import { loginUser, signup } from "./user.services";
+import { ResponseHandler } from "../utilities/response.handler";
 
 const router = Router();
 
-router.post('/signup', (req, res, next) => {
+router.post('/signup', async(req, res, next) => {
     try{
-
+        const { username, email, password } = req.body;
+        const response = await signup(username, email, password);
+        res.send(new ResponseHandler(response));
     }
     catch(e){
         next(e);
     }
 });
 
-router.post('/login', (req, res, next) => {
+router.post('/login', async(req, res, next) => {
     try{
-
+        const { email, password } = req.body;
+        const token = await loginUser(email, password);
+        res.json({ token });
     }
     catch(e){
         next(e);
