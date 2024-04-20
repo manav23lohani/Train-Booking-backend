@@ -1,7 +1,7 @@
 import { createUser, getUserByEmail, getUserByUsername } from './user.repo';
 import jwt from 'jsonwebtoken';
 
-export const signup = async (username: string, email: string, password: string) => {
+export const signupService = async (username: string, email: string, password: string) => {
     const existingUserByEmail = await getUserByEmail(email);
     const existingUserByUsername = await getUserByUsername(username);
 
@@ -16,7 +16,7 @@ export const signup = async (username: string, email: string, password: string) 
     return 'USER REGISTERED';
 };
 
-export const loginUser = async (email: string, password: string) => {
+export const loginService = async (email: string, password: string) => {
     const user = await getUserByEmail(email);
     if (!user) {
         throw 'USER NOT FOUND';

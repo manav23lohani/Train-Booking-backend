@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Route } from "../routes/routes.type";
-import { loginUser, signup } from "./user.services";
+import { loginService, signupService } from "./user.services";
 import { ResponseHandler } from "../utilities/response.handler";
 
 const router = Router();
@@ -8,7 +8,7 @@ const router = Router();
 router.post('/signup', async(req, res, next) => {
     try{
         const { username, email, password } = req.body;
-        const response = await signup(username, email, password);
+        const response = await signupService(username, email, password);
         res.send(new ResponseHandler(response));
     }
     catch(e){
@@ -19,8 +19,8 @@ router.post('/signup', async(req, res, next) => {
 router.post('/login', async(req, res, next) => {
     try{
         const { email, password } = req.body;
-        const token = await loginUser(email, password);
-        res.json({ token });
+        const token = await loginService(email, password);
+        res.send(new ResponseHandler({token}));
     }
     catch(e){
         next(e);
