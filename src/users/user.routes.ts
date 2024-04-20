@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { Route } from "../routes/routes.type";
-import { seatAvailabilityService, loginService, signupService } from "./user.services";
+import { seatAvailabilityService, loginService, signupService, bookSeatService } from "./user.services";
 import { ResponseHandler } from "../middlewares/response.handler";
+import { verifyToken } from "../middlewares/user.auth";
 
 const router = Router();
 
@@ -27,11 +28,17 @@ router.post('/login', async(req, res, next) => {
     }
 });
 
-router.post('/book-ticket', (req, res, next) => {
-    try{
-
-    }
-    catch(e){
+router.post('/book-ticket/:trainId', verifyToken, async(req, res, next) => {
+    const { trainId } = req.params;
+    const { userId } = req.user;
+    try {
+        const booked = await bookSeatService(Number(trainId), userId);
+        if (booked) {
+            res.send('Seat booked successfully');
+        } else {
+            res.send('No seat available');
+        }
+    } catch (e) {
         next(e);
     }
 });

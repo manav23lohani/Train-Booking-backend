@@ -25,3 +25,22 @@ export const getTrainsBetweenStations = async (source: string, destination: stri
     const result = await client.query(query, [source, destination]);
     return result.rows;
 };
+
+export const bookSeat = async (trainId: number, userId: number): Promise<boolean> => {
+        await client.query('BEGIN');
+        
+        await client.query('SELECT * FROM trains WHERE train_id = $1 FOR UPDATE', [trainId]);
+        
+        const result = await client.query('SELECT number_of_seats FROM trains WHERE train_id = $1', [trainId]);
+        const numberOfSeats = result.rows[0].number_of_seats;
+        
+        if (numberOfSeats > 0) {
+            await client.query('UPDATE trains SET number_of_seats = number_of_seats - 1 WHERE train_id = $1', [trainId]);
+            
+            await client.query('COMMIT');
+            return true;
+        } else {
+            await client.query('ROLLBACK');
+            return false;
+        }
+};
